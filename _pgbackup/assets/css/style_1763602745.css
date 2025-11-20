@@ -1627,7 +1627,7 @@ textarea.form-input::-webkit-resizer {
    * SIDEBAR */
     .contacts-list {
         grid-template-columns: 1fr 1fr;
-        gap: 30px 18px;
+        gap: 30px 15px;
     }
 
     /* *
@@ -1892,7 +1892,7 @@ textarea.form-input::-webkit-resizer {
     }
 
     .contact-info :is(.contact-link, time, address) {
-        --fs-7: 10px;
+        --fs-7: 14px;
         font-weight: var(--fw-300);
     }
 

@@ -1,10 +1,6 @@
 'use strict';
 
 
-// Add this at the top of script.js to prevent page reload
-document.querySelector("[data-form]")?.addEventListener("submit", function(e) {
-  e.preventDefault();
-});
 
 // element toggle function
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }

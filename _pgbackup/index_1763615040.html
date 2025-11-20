@@ -545,7 +545,7 @@
                                 <input type="email" name="email" class="form-input" placeholder="Email address" required="" data-form-input="">
                             </div>
                             <textarea name="message" class="form-input" placeholder="Your Message" required="" data-form-input=""></textarea>
-                            <button id="sendMessageBtn" class="form-btn" type="submit" data-form-btn>
+                            <button class="form-btn" type="submit" data-form-btn="">
                                 <ion-icon name="paper-plane" role="img" class="md hydrated" aria-label="paper plane"></ion-icon>
                                 <span>Send Message</span>
                             </button>
@@ -568,35 +568,21 @@
   })();
 </script>
         <script>
-// Initialize EmailJS
-emailjs.init("vVSOD4l48YVrViYP4");
-
-// THIS IS THE ONLY HANDLER YOU NEED
-document.getElementById("contact-form").addEventListener("submit", function(e) {
-    e.prevent  // This + the one in script.js = double prevention → sometimes blocks everything!
-    // So we now rely ONLY on the preventDefault in script.js (which you already added)
-
-    const btn = document.getElementById("sendMessageBtn");
-    btn.disabled = true;
-    btn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon><span>Sending...</span>';
+document.querySelector(".form").addEventListener("submit", function(event) {
+    event.preventDefault(); // stop page from reloading
 
     const params = {
-        from_name: this.fullname.value.trim(),
-        from_email: this.email.value.trim(),
-        message: this.message.value.trim()
+        from_name: document.querySelector("input[name='fullname']").value,
+        from_email: document.querySelector("input[name='email']").value,
+        message: document.querySelector("textarea[name='message']").value,
     };
 
     emailjs.send("service_3zcxfqe", "portfolioclientrequest", params)
-        .then(() => {
-            alert("Thank you! Your message was sent successfully! 🎉");
-            this.reset();
-            btn.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
-        })
-        .catch((err) => {
-            alert("Failed to send. Please try again or email me directly.");
-            console.error(err);
-            btn.disabled = false;
-            btn.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
+        .then(function() {
+            alert("Message sent!");
+        }, function(error) {
+            alert("Failed to send message.");
+            console.log(error);
         });
 });
 </script>

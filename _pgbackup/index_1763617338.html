@@ -22,9 +22,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!--
-    - #MAIN
-  -->
+        <!-- - #MAIN -->
         <main>
             <!--
       - #SIDEBAR
@@ -84,9 +82,7 @@
                     </ul>
                 </div>
             </aside>
-            <!--
-      - #main-content
-    -->
+            <!-- - #main-content -->
             <div class="main-content">
                 <!--  - #NAVBAR  -->
                 <nav class="navbar">
@@ -99,9 +95,6 @@
                         </li>
                         <li class="navbar-item">
                             <button class="navbar-link" data-nav-link="">About</button>
-                        </li>
-                        <li class="navbar-item">
-                            <button class="navbar-link" data-nav-link="">Blog</button>
                         </li>
                         <li class="navbar-item">
                             <button class="navbar-link" data-nav-link="">Contact</button>
@@ -240,7 +233,7 @@
                         </div>
                         <ol class="timeline-list">
                             <li class="timeline-item">
-                                <h4 class="h4 timeline-item-title">University school of the arts</h4>
+                                <h4 class="h4 timeline-item-title">Western Governer Univeristy</h4>
                                 <span>2007 &#8212; 2008</span>
                                 <p class="timeline-text">
                 Nemo enims ipsam voluptatem, blanditiis praesentium voluptum delenit atque corrupti, quos dolores et
@@ -341,7 +334,7 @@
                     </section>
                 </article>
                 <!-- - #ABOUT  -->
-                <article class="portfolio" data-page="about">
+                <article class="about" data-page="about">
                     <header>
                         <h2 class="h2 article-title">About me</h2>
                     </header>
@@ -507,9 +500,7 @@
                             </div>
                         </section>
                     </div>
-                    <!--
-          - clients
-        -->
+                    <!-- - clients -->
                     <section class="clients">
                         <h3 class="h3 clients-title">Clients</h3>
                         <ul class="clients-list has-scrollbar">
@@ -541,18 +532,18 @@
                     </header>
                     <section class="mapbox" data-mapbox="">
                         <figure>
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d199666.5651251294!2d-121.58334177520186!3d38.56165006739519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809ac672b28397f9%3A0x921f6aaa74197fdb!2sSacramento%2C%20CA%2C%20USA!5e0!3m2!1sen!2sbd!4v1647608789441!5m2!1sen!2sbd" width="400" height="300" loading="lazy"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110577.81855042914!2d-97.83699504879959!3d30.307982604119033!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644b5a59e16bf47%3A0xf27f6b3d429b06fe!2sAustin%2C%20TX!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                         </figure>
                     </section>
                     <section class="contact-form">
                         <h3 class="h3 form-title">Contact Form</h3>
-                        <form action="#" class="form" data-form="">
+                        <form id="contact-form" action="#" class="form" data-form>
                             <div class="input-wrapper">
                                 <input type="text" name="fullname" class="form-input" placeholder="Full name" required="" data-form-input="">
                                 <input type="email" name="email" class="form-input" placeholder="Email address" required="" data-form-input="">
                             </div>
                             <textarea name="message" class="form-input" placeholder="Your Message" required="" data-form-input=""></textarea>
-                            <button class="form-btn" type="submit" disabled="" data-form-btn="">
+                            <button id="sendMessageBtn" class="form-btn" type="submit" data-form-btn>
                                 <ion-icon name="paper-plane" role="img" class="md hydrated" aria-label="paper plane"></ion-icon>
                                 <span>Send Message</span>
                             </button>
@@ -568,5 +559,44 @@
   -->
         <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <script>
+  (function() {
+    emailjs.init("vVSOD4l48YVrViYP4");
+  })();
+</script>
+        <script>
+// Initialize EmailJS
+emailjs.init("vVSOD4l48YVrViYP4");
+
+// THIS IS THE ONLY HANDLER YOU NEED
+document.getElementById("contact-form").addEventListener("submit", function(e) {
+    e.prevent  // This + the one in script.js = double prevention → sometimes blocks everything!
+    // So we now rely ONLY on the preventDefault in script.js (which you already added)
+
+    const btn = document.getElementById("sendMessageBtn");
+    btn.disabled = true;
+    btn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon><span>Sending...</span>';
+
+    const params = {
+        from_name: this.fullname.value.trim(),
+        from_email: this.email.value.trim(),
+        message: this.message.value.trim()
+    };
+
+    emailjs.send("service_3zcxfqe", "portfolioclientrequest", params)
+        .then(() => {
+            alert("Thank you! Your message was sent successfully! 🎉");
+            this.reset();
+            btn.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
+        })
+        .catch((err) => {
+            alert("Failed to send. Please try again or email me directly.");
+            console.error(err);
+            btn.disabled = false;
+            btn.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
+        });
+});
+</script>
     </body>
 </html>
